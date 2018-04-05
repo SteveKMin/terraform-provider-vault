@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/hashicorp/vault/api"
-	"strings"
 )
 
 func consulRoleResource() *schema.Resource {
@@ -27,7 +27,6 @@ func consulRoleResource() *schema.Resource {
 				Required:    true,
 				Description: "The name of the role",
 			},
-
 			"role": &schema.Schema{
 				Type:        schema.TypeString,
 				Required:    true,
@@ -61,11 +60,11 @@ func consulRoleWrite(d *schema.ResourceData, meta interface{}) error {
 	role := d.Get("role").(string)
 	userPath := d.Get("path").(string)
 
-	data := make(map[string]interface{})
-	encodedRole := base64.StdEncoding.EncodeToString([]byte(role))
-	data["policy"] = encodedRole
-	data["lease"] = 0
-	data["token_type"] = "client"
+	data := map[string]interface{}{
+		"policy":     base64.StdEncoding.EncodeToString([]byte(role)),
+		"lease":      0,
+		"token_type": "client",
+	}
 
 	path := userPath + "/" + name
 	log.Printf("[DEBUG] Writing Consul Role %s to Vault", path)
