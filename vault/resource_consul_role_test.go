@@ -78,7 +78,7 @@ func testResourceConsulRole_initialCheck(expectedName string) resource.TestCheck
 
 		name := instanceState.Attributes["name"]
 		path := instanceState.ID
-		constructedPath := "consul/roles" + name
+		constructedPath := "consul/roles/" + name
 
 		if name != expectedName {
 			return fmt.Errorf("unexpected policy name %q, expected %q", name, expectedName)

@@ -36,8 +36,8 @@ func consulRoleResource() *schema.Resource {
 				Type:        schema.TypeString,
 				Optional:    true,
 				ForceNew:    true,
-				Default:     "consul/roles",
-				Description: "Path to mount the consul role at",
+				Default:     "consul",
+				Description: "Path to the consul secret backend mount. Default is just \"consul\".",
 				ValidateFunc: func(v interface{}, k string) (ws []string, errs []error) {
 					value := v.(string)
 					if strings.HasSuffix(value, "/") {
@@ -66,7 +66,7 @@ func consulRoleWrite(d *schema.ResourceData, meta interface{}) error {
 		"token_type": "client",
 	}
 
-	path := userPath + "/" + name
+	path := userPath + "/roles/" + name
 	log.Printf("[DEBUG] Writing Consul Role %s to Vault", path)
 	_, err := client.Logical().Write(path, data)
 	if err != nil {
@@ -120,7 +120,7 @@ func consulRoleRead(d *schema.ResourceData, meta interface{}) error {
 	}
 	splitPath := strings.Split(path, "/")
 	d.Set("data_json", string(jsonDataBytes))
-	d.Set("path", splitPath[0]+"/"+splitPath[1])
+	d.Set("path", splitPath[0])
 
 	return nil
 }

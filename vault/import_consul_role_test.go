@@ -8,7 +8,7 @@ import (
 )
 
 func TestAccConsulRole_importBasic(t *testing.T) {
-	path := acctest.RandomWithPrefix("consul/roles-")
+	path := acctest.RandomWithPrefix("consul-")
 	resource.Test(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
 		Providers: testProviders,

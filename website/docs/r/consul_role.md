@@ -14,7 +14,7 @@ description: |-
 ```hcl
 resource "vault_consul_role" "example" {
   name = "app"
-  path = "consul/roles"
+  path = "consul"
   role = <<EOT
 key "app/" {
     policy = "read"
@@ -34,7 +34,7 @@ The following arguments are supported:
 
 * `role` - (Required) String containing the role's data
 
-* `path` - (Optional) The path you wish the role to be placed in. Default is ```consul/roles```
+* `path` - (Optional) The path to the consul secret backend. Default is ```consul```
 
 ## Attributes Reference
 
